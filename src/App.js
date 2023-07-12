@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import Rodal from 'rodal';
+import 'rodal/lib/rodal.css';
 
 function LoadFood() {
   const [data,setData] = useState([]);
@@ -18,6 +20,8 @@ function LoadFood() {
 
 }
 
+
+
 function App() {
 
   const testJSON = {
@@ -27,6 +31,11 @@ function App() {
   }
 
   const [data, setData] = useState([]);
+  const [rodalVisibility, setRodalVisibility] = useState(false);
+
+  function handleVisibility(boolean) {
+    setRodalVisibility(boolean);
+  }
 
   const testList = [];
 
@@ -48,8 +57,11 @@ function App() {
     <div className="">
       <div className="flow-root w-full border-solid border-black border-2">
         <h1 className="mt-2 float-left text-2xl">To-do list</h1>
-        <button className="mt-2 float-right text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800">Add</button>
+        <button onClick={() => handleVisibility(true)} className="mt-2 float-right text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800">Add</button>
       </div>
+      <Rodal visible={rodalVisibility} onClose={() => handleVisibility(false)}>
+        <div>IT WORKS!</div>
+      </Rodal>
       <div className="space-y-3.5 mt-16 flex flex-col xs:flex-row border-solid border-black border-2">
         <div id="lowPriority" className="border-solid border-black border-2">Low priority
           {tasks}
