@@ -2,30 +2,32 @@ import React, { useEffect, useState } from 'react';
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
 
-function LoadTasks() {
-  const [data,setData] = useState([]);
-
-  useEffect(() => {
-      const dataFetch = async () => {
-          const info = await fetch("PLACEHOLDER").then(response => response.json());
-
-          setData(info);
-      };
-
-      dataFetch();
-
-  }, []);
-
-  console.log(data);
-
-  return data;
-
-}
-
-
-
 
 function App() {
+  const testJSON = [{
+    'id':'0',
+    'title':'Do this',
+    'desc':'You have to do this maaan',
+    'date':'2030-02-10',
+    'priority':'Low'
+  },
+  {
+    'id':'1',
+    'title':'Do that',
+    'desc':'You have to do this maaan',
+    'date':'2030-02-10',
+    'priority':'Medium'
+  },
+  {
+    'id':'2',
+    'title':'Do this first!',
+    'desc':'You have to do this maaan',
+    'date':'2030-02-10',
+    'priority':'High'
+  }
+];
+
+  const [tasks, setTasks] = useState(testJSON);
 
   const Task = (props) => {
     const {title, desc, date, delTask, id} = props;
@@ -234,30 +236,7 @@ function App() {
     setDefaultTask(json);
   }
 
-  const testJSON = [{
-      'id':'0',
-      'title':'Do this',
-      'desc':'You have to do this maaan',
-      'date':'2030-02-10',
-      'priority':'Low'
-    },
-    {
-      'id':'1',
-      'title':'Do that',
-      'desc':'You have to do this maaan',
-      'date':'2030-02-10',
-      'priority':'Medium'
-    },
-    {
-      'id':'2',
-      'title':'Do this first!',
-      'desc':'You have to do this maaan',
-      'date':'2030-02-10',
-      'priority':'High'
-    }
-  ];
 
-  const [tasks, setTasks] = useState(LoadTasks());
   
   const [rodalVisibility, setRodalVisibility] = useState(false);
   const handleVisibility = (boolean) => setRodalVisibility(boolean);
