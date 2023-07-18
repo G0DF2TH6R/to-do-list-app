@@ -18,6 +18,8 @@ function LoadTasks() {
 
   console.log(data);
 
+  return data;
+
 }
 
 
@@ -255,7 +257,7 @@ function App() {
     }
   ];
 
-  const [tasks, setTasks] = useState(testJSON);
+  const [tasks, setTasks] = useState(LoadTasks());
   
   const [rodalVisibility, setRodalVisibility] = useState(false);
   const handleVisibility = (boolean) => setRodalVisibility(boolean);
