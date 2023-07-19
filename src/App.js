@@ -24,8 +24,7 @@ function App() {
     'desc':'You have to do this maaan',
     'date':'2030-02-10',
     'priority':'High'
-  }
-];
+  }];
 
   const [tasks, setTasks] = useState(testJSON);
 
@@ -109,18 +108,58 @@ function App() {
     const handleChange = (event) => {
       const name = event.target.name;
       const value = event.target.value;
+
       setInputs(values => ({...values, [name]: value}));
       setSubmission(values => ({...values, [name]: value}));
     }
 
     const handleSubmit = (event) => {
       event.preventDefault();
-      alert(JSON.stringify(submission));
+
+      let i = 0;
+
+      while (true) {
+        try {
+          if (Number(tasks[i].id) != i) {
+            submission.id = i;
+            break;
+          }
+        } catch (err) {
+          submission.id = i;
+          break;
+        }
+        i++;  
+      }
+
+      if (submission.title === "" || submission.date === "") {
+        alert("One or both required fields are empty!")
+      } else {
+        addTask(submission);
+      }
+    }
+
+    const addTask = (submission) => {
+      setTasks([...tasks, submission]);
+      setRodalVisibility(false);
     }
 
     const handleEditSubmit = (event) => {
-      handleSubmit(event);
-      deleteTask(submission.id);
+      event.preventDefault();
+      let i = 0;
+
+      while (true) {
+
+        if (tasks[i].id == defaultTask.id) {
+          tasks[i].title = submission.title;
+          tasks[i].desc = submission.desc;
+          tasks[i].date = submission.date;
+          tasks[i].priority = submission.priority;
+          break;
+        }
+        i++;
+      }
+
+      setRodalVisibility(false);
     }
 
     const [textAreaSize, setTextAreaSize] = useState(0);
@@ -136,7 +175,7 @@ function App() {
           <div className="flex flex-wrap -mx-3 mb-6">
             <div className="w-full px-3">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                Title
+                Title*
               </label>
               <input name='title' onChange={handleChange} className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text"  />
             </div>
@@ -152,7 +191,7 @@ function App() {
           </div>
           <div className="w-full">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                Due date
+                Due date*
               </label>
               <input name='date' onChange={handleChange} className="appearance-none mb-4 block w-auto bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="date" />
           </div>
@@ -202,7 +241,7 @@ function App() {
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                 Due date
               </label>
-              <input name='date' onChange={handleChange} className="appearance-none mb-4 block w-auto bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="date" />
+              <input defaultValue={defaultTask.date} name='date' onChange={handleChange} className="appearance-none mb-4 block w-auto bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="date" />
           </div>
           <div className="flex flex-wrap -mx-3 mb-2">
             <div className=" md:w-1/3 px-3 mb-6 md:mb-0">
@@ -312,6 +351,21 @@ function App() {
           <h1 className='mx-2'>Priority:</h1>
           <p>{chosenTask.priority}</p>
         </div>
+        <div className='flex'>
+          <button onClick={() => {
+            setDefaultTask(chosenTask);
+            setRodalVisibility(true);
+            setDescRodalVisibility(false);
+          }} class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+            Edit
+          </button>
+          <button onClick={() => {
+            setDescRodalVisibility(false);
+            deleteTask(chosenTask.id);
+          }} className="bg-transparent ml-32 hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+            Done
+          </button>
+        </div>
       </div>
     )
   }
@@ -330,10 +384,11 @@ function App() {
           'priority':'Low'
         })}} className="mt-2 float-right text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800">Add</button>
       </div>
+      <hr className="h-px bg-black border-0"/>
       <Rodal height={550} visible={rodalVisibility} onClose={() => handleVisibility(false)}>
         <AddOrModifyTask />
       </Rodal>
-      <Rodal width={340} height={250} visible={descRodalVisibility} onClose={() => handleDescVisibility(false)}>
+      <Rodal width={340} height={300} visible={descRodalVisibility} onClose={() => handleDescVisibility(false)}>
         <Description />
       </Rodal>
       <div className='h-8 xs:h-16'/>
